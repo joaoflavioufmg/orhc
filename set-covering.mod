@@ -20,9 +20,14 @@
 set I:= 1..10;  # The set of demand points
 set J:= 1..5;  # The set of candidate locations.
 
-param d{I,J}:= Uniform(30,100); # The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
-param D{I}:= Uniform(75,80); # The maximum acceptable travel distance or time from demand point i ∈ I (the cover distance or time).
-set N{i in I} := setof{j in J: d[i,j] <= D[i]} j; # The set of all candidate locations which can cover demand point i ∈ I, N[i] = {j ∈ J| d[ij] ≤ D[i]}.
+# The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
+param d{I,J}:= Uniform(30,100); 
+# The maximum acceptable travel distance or time from demand point i ∈ I 
+# (the cover distance or time).
+param D{I}:= Uniform(75,80); 
+# The set of all candidate locations which can cover demand point i ∈ I, 
+# N[i] = {j ∈ J| d[ij] ≤ D[i]}.
+set N{i in I} := setof{j in J: d[i,j] <= D[i]} j; 
 
 ##################
 param f{J}:= Normal(100,10); # The fixed cost of locating at candidate location j ∈ J.
@@ -30,9 +35,12 @@ param f{J}:= Normal(100,10); # The fixed cost of locating at candidate location 
 
 display N;
 
-var x{j in J}, >=0, binary; # 1, if a facility is established (located or opened) at candidate location j ∈ J; 0 otherwise. Also, integrality constraints.
+# 1, if a facility is established (located or opened) at candidate location j ∈ J; 
+# 0 otherwise. Also, integrality constraints.
+var x{j in J}, >=0, binary; 
 
-# the objective function (OF1) minimizes the location cost of the facilities which are needed to cover all demand points.
+# the objective function (OF1) minimizes the location cost of the facilities 
+# which are needed to cover all demand points.
 minimize OF1: sum{j in J}f[j]*x[j];
 
 # Constraints (R2) ensure that each demand point must be covered.
@@ -44,6 +52,7 @@ printf:"\n===========================================\n";
 printf:"Total Cost: %.2f\n", OF1;
 printf:"Selected Locations: %d", sum{j in J}x[j];
 printf:"\n===========================================\n";
-printf{j in J, i in I: x[j]>0}:"[%s] <-- [%s]:\t%d km\t($ %.2f);\n", j, i, d[i,j]*x[j], f[j]*x[j]; 
+printf{j in J, i in I: x[j]>0}:"[%s] <-- [%s]:\t%d km\t($ %.2f);\n", 
+j, i, d[i,j]*x[j], f[j]*x[j]; 
 printf:"===========================================\n";
 

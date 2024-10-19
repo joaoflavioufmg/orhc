@@ -19,9 +19,14 @@
 set I:= 1..10;  # The set of demand points
 set J:= 1..5;  # The set of candidate locations.
 
-param d{I,J}:= Uniform(30,100); # The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
-param D{I}:= Uniform(25,80); # The maximum acceptable travel distance or time from demand point i ∈ I (the cover distance or time).
-set N{i in I} := setof{j in J: d[i,j] <= D[i]} j; # The set of all candidate locations which can cover demand point i ∈ I, N[i] = {j ∈ J| d[ij] ≤ D[i]}.
+# The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
+param d{I,J}:= Uniform(30,100); 
+# The maximum acceptable travel distance or time from demand point i ∈ I (the cover 
+# distance or time).
+param D{I}:= Uniform(25,80); 
+# The set of all candidate locations which can cover demand point i ∈ I, 
+# N[i] = {j ∈ J| d[ij] ≤ D[i]}.
+set N{i in I} := setof{j in J: d[i,j] <= D[i]} j; 
 
 ##################
 param w{I}:= Normal(50,10); # The demand point at i ∈ I.
@@ -31,9 +36,12 @@ check: p <= card(J);
 
 display N;
 
-var x{j in J}, >=0, binary; # 1, if a facility is established (located or opened) at candidate location j ∈ J; 0 otherwise. Also, integrality constraints.
+# 1, if a facility is established (located or opened) at candidate location j ∈ J; 
+# 0 otherwise. Also, integrality constraints.
+var x{j in J}, >=0, binary; 
 ##################
-var z{i in I}, >=0, binary; # 1, if demand point ∈i I is covered; 0 otherwise.
+# 1, if demand point ∈ i I is covered; 0 otherwise.
+var z{i in I}, >=0, binary; 
 ##################
 
 # The objective (OF4) maximizes the total covered demand.
@@ -51,6 +59,7 @@ printf:"\n===========================================\n";
 printf:"Demand covered: %.2f\n", OF4;
 printf:"Selected Locations: %d", sum{j in J}x[j];
 printf:"\n===========================================\n";
-printf{j in J, i in I: x[j]>0 and z[i]>0}:"[%s] <-- [%s]:\t%d km\t(Dem: %.2f);\n", j, i, d[i,j]*z[i], w[i]*z[i]; 
+printf{j in J, i in I: x[j]>0 and z[i]>0}:"[%s] <-- [%s]:\t%d 
+km\t(Dem: %.2f);\n", j, i, d[i,j]*z[i], w[i]*z[i]; 
 printf:"===========================================\n";
 

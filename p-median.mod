@@ -17,14 +17,20 @@
 set I:= 1..10;  # The set of demand points
 set J:= 1..5;  # The set of candidate locations.
 
-param d{I,J}:= Uniform(30,100); # The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
+# The travel distance (or time) from demand point i ∈ I to candidate 
+# location j ∈ J.
+param d{I,J}:= Uniform(30,100); 
 param w{I}:= Normal(50,10); # The demand point at i ∈ I.
 param p:= 3; # The number of candidate locations to be established.
 check: p <= card(J);
 
 ##################
-var x{j in J}, >=0, binary; # 1, if a facility is established (located or opened) at candidate location j ∈ J; 0 otherwise. Also, integrality constraints.
-var y{i in I, j in J}, >=0, binary; # 1,if demand point i is assigned to a facility at candidate location j ∈ Ni; 0 otherwise
+# 1, if a facility is established (located or opened) at candidate location j ∈ J; 
+# 0 otherwise. Also, integrality constraints.
+var x{j in J}, >=0, binary; 
+# 1,if demand point i is assigned to a facility at candidate location j ∈ Ni; 
+# 0 otherwise
+var y{i in I, j in J}, >=0, binary; 
 ##################
 
 # the objective (OF17) minimizes the total demand-weighted travel distance (or time). 
@@ -45,6 +51,7 @@ printf:"\n===========================================\n";
 printf:"Total demand-weighted distance: %.2f\n", OF17; 
 printf:"Selected Locations: %d", sum{j in J}x[j];
 printf:"\n===========================================\n";
-printf{j in J, i in I: y[i,j]>0}:"[%s] <-- [%s]:\t%d km\t(Dem: %.2f);\n", j, i, d[i,j]*y[i,j], w[i]*y[i,j]; 
+printf{j in J, i in I: y[i,j]>0}:"[%s] <-- [%s]:\t%d km\t(Dem: %.2f);\n", 
+j, i, d[i,j]*y[i,j], w[i]*y[i,j]; 
 printf:"===========================================\n";
 

@@ -22,9 +22,15 @@
 set I:= 1..10;  # The set of demand points
 set J:= 1..5;  # The set of candidate locations.
 
-param d{I,J}:= Uniform(30,100); # The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
-param D{I}:= Uniform(75,80); # The maximum acceptable travel distance or time from demand point i ∈ I (the cover distance or time).
-set N{i in I} := setof{j in J: d[i,j] <= D[i]} j; # The set of all candidate locations which can cover demand point i ∈ I, N[i] = {j ∈ J| d[ij] ≤ D[i]}.
+# The travel distance (or time) from demand point i ∈ I to candidate location j ∈ J.
+param d{I,J}:= Uniform(30,100); 
+# The maximum acceptable travel distance or time from demand point i ∈ I (the cover 
+# distance or time).
+
+# The set of all candidate locations which can cover demand point i ∈ I, 
+# N[i] = {j ∈ J| d[ij] ≤ D[i]}.
+param D{I}:= Uniform(75,80); 
+set N{i in I} := setof{j in J: d[i,j] <= D[i]} j; 
 
 ##################
 param w{I}:= Normal(50,10); # The demand point at i ∈ I.
@@ -34,13 +40,19 @@ check: p <= card(J);
 
 display N;
 
-var x{j in J}, >=0, binary; # 1, if a facility is established (located or opened) at candidate location j ∈ J; 0 otherwise. Also, integrality constraints.
+# 1, if a facility is established (located or opened) at candidate location j ∈ J; 
+# 0 otherwise. Also, integrality constraints.
+var x{j in J}, >=0, binary; 
 ##################
-var y{i in I, j in N[i]}, >=0, binary; # 1,if demand point i is assigned to a facility at candidate location j ∈ Ni; 0 otherwise
+# 1,if demand point i is assigned to a facility at candidate location j ∈ Ni; 0 otherwise
+var y{i in I, j in N[i]}, >=0, binary; 
 ##################
-var L, >= 0; # L is an auxiliary variable (not a decision variable) that is used to compute the maximum distance.
+# L is an auxiliary variable (not a decision variable) that is used to compute 
+# the maximum distance.
+var L, >= 0; 
 
-# The objective (OF9) minimizes the maximum demand-weighted distance (or time) between a demand point and the (nearest) facility allocated to it.
+# The objective (OF9) minimizes the maximum demand-weighted distance (or time) 
+# between a demand point and the (nearest) facility allocated to it.
 minimize OF9: L;
 
 # Constraints (10) guarantee that each demand point is covered by only one facility.
@@ -49,7 +61,9 @@ s.t. R10{i in I}: sum{j in N[i]}y[i,j] = 1;
 # Constraint (11) states that p facilities are to be located.
 s.t. R11: sum{j in J}x[j] = p;
 
-# Constraints (12) determine the maximum demand-weighted distance (or time). Note that L is an auxiliary variable (not a decision variable) that is used to compute the maximum distance.
+# Constraints (12) determine the maximum demand-weighted distance (or time). 
+# Note that L is an auxiliary variable (not a decision variable) that is used 
+# to compute the maximum distance.
 s.t. R12{i in I}: sum{j in N[i]}w[i]*d[i,j]*y[i,j] <= L;
 
 # Constraints (13) show that demand points are only covered by open facilities.
@@ -61,6 +75,7 @@ printf:"\n===========================================\n";
 printf:"Maximum demand-weighted distance: %.2f\n", OF9;
 printf:"Selected Locations: %d", sum{j in J}x[j];
 printf:"\n===========================================\n";
-printf{j in J, i in I: j in N[i] and y[i,j]>0}:"[%s] <-- [%s]:\t%d km\t(Dem: %.2f);\n", j, i, d[i,j]*y[i,j], w[i]*y[i,j]; 
+printf{j in J, i in I: j in N[i] and y[i,j]>0}:"[%s] <-- [%s]:\t%d km\t(Dem: %.2f);\n", 
+j, i, d[i,j]*y[i,j], w[i]*y[i,j]; 
 printf:"===========================================\n";
 
