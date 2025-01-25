@@ -1,0 +1,49 @@
+#############################################################################
+# Operations Research for Health Care
+# Lesson 11/15
+# Author: João Flávio de Freitas Almeida <joao.flavio@dep.ufmg.br>
+# LEPOINT: Laboratório de Estudos em Planejamento de Operações Integradas
+# Departmento de Engenharia de Produção
+# Universidade Federal de Minas Gerais - Escola de Engenharia
+#############################################################################
+# Health Care Facility Location Under Uncertainty
+# Robust Optimization
+# Ref: Correia, I., & Saldanha-da-Gama, F. (2019). 
+# Facility location under uncertainty. Location science, 185-213.
+# Box Uncertainty Sets Data (Small Instance)
+#############################################################################
+# glpsol -m ro.mod -d ro.dat --cuts
+
+################################################
+# Uncapacitated Facility Location Problem - UFLP 
+################################################
+set I:= 1   2   3   4; # The set of all origin.
+set J:= 1   2   3; # The set of all (possible) destination points.
+
+param E:= 0.5;
+
+# Demand at oring i in I
+param Dbar:=
+1   15
+2   10
+3   15
+4   20
+; 
+
+# Setup cost for facility j in J       
+param F:=
+1   150
+2   1000
+3   50
+; 
+
+# Unit cost for meeting demand (not full demand) from i to j
+param C: 1  2   3 :=
+    1   1   5   10
+    2   2   6   11
+    3   3   7   12
+    4   4   8   13
+    ;
+
+end;
+##############################################
