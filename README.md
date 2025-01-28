@@ -11,3 +11,7 @@ A survey of healthcare facility location. Computers & Operations Research, 79, 2
 [3] Guagliardo, M. F. (2004). Spatial accessibility of primary care: concepts, methods and challenges. International journal of health geographics, 3, 1-13.
 
 [4] Shengelia, B., Tandon, A., Adams, O. B., and Murray, C. J. (2005). Access, utilization, quality, and effective coverage: an integrated conceptual framework and measurement strategy. Social science & medicine, 61(1):97–109. 
+
+[5] Contreras, I. and Ortiz-Astorquiza, C. (2019). Hierarchical facility location problems. Location science, pages 365–389
+
+[6] Ortiz-Astorquiza, C., Contreras, I., and Laporte, G. (2018). Multi-level facility location problems. European Journal of Operational Research, 267(3):791–805.
