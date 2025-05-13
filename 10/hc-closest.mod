@@ -246,8 +246,11 @@ s.t. R9c:  sum{j1 in CL[1] inter L1}y1[j1] <= U[1];
 s.t. R10c: sum{j2 in CL[2] inter L2}y2[j2] <= U[2];
 s.t. R11c: sum{j3 in CL[3] inter L3}y3[j3] <= U[3];
 
-
 solve;
+
+# display D1;
+# printf{i in I, j1 in L1: i = 1 and y1[j1]=1}: "i[%s]\tj1[%s]: %d\t%d\n",i,j1, sum{k in L1: D1[i,k]>D1[i,j1]}y[i,k], y1[j1];
+
 
 printf: "\n========================================\n";
 printf: "Health Care Plan\n";
@@ -539,6 +542,7 @@ C3[j3],
 sum{j2 in L2}u3[j2,j3],
 ((sum{j2 in L2}u3[j2,j3])/(C3[j3]))*100;
 printf: "========================================\n\n";
+
 
 end;
 

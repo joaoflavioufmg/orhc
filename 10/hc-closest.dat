@@ -84,7 +84,7 @@ set CL[3] := THC4 THC5 THC6;
 
 # Maximal distance for each level
 param Dmax:=
-1   5
+1   10
 2   13
 3   25
 ;
